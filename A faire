@@ -1,0 +1,13 @@
+2 - Ajouter le Transformateur, decodeur, avec plusieurs contextes
+3 - Ne plus tester tout le bloque en même temps. Car ça sera fait en Batch. (ts__d[0]=0, ts__d[1]=1 ...)
+4 - Tester avec Interv=1,8
+
+Optimisations :
+	(Faire le system de teste de chaque instruction)
+
+	/!\ IMPORTANT : Optimiser A@B, Batch Norm, Softmax, QKtDivClef
+
+Modèles :
+	Decodeur, CTX0, CTX1, CTX2 ...
+
+	Self-Encodeur -> Transformers (qui prennent un vecteur null en entrée) -> Linéair
