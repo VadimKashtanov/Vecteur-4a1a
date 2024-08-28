@@ -91,6 +91,10 @@ nvcc -c impl/insts/isomme/isomme_df.cu ${A} &
 nvcc -c impl/insts/imaxmin/imaxmin.cu ${A} &
 nvcc -c impl/insts/imaxmin/imaxmin_f.cu ${A} &
 nvcc -c impl/insts/imaxmin/imaxmin_df.cu ${A} &
+#	/insts/imax
+nvcc -c impl/insts/imax/imax.cu ${A} &
+nvcc -c impl/insts/imax/imax_f.cu ${A} &
+nvcc -c impl/insts/imax/imax_df.cu ${A} &
 #	/insts/batch_miu
 nvcc -c impl/insts/batch_miu/batch_miu.cu ${A} &
 nvcc -c impl/insts/batch_miu/batch_miu_f.cu ${A} &
@@ -114,6 +118,10 @@ nvcc -c impl/insts/positionnal/positionnal_df.cu ${A} &
 nvcc -c impl/insts/div_scal/div_scal.cu ${A} &
 nvcc -c impl/insts/div_scal/div_scal_f.cu ${A} &
 nvcc -c impl/insts/div_scal/div_scal_df.cu ${A} &
+#	/insts/sous_scal
+nvcc -c impl/insts/sous_scal/sous_scal.cu ${A} &
+nvcc -c impl/insts/sous_scal/sous_scal_f.cu ${A} &
+nvcc -c impl/insts/sous_scal/sous_scal_df.cu ${A} &
 #	/insts/normalisation
 nvcc -c impl/insts/normalisation/normalisation.cu ${A} &
 nvcc -c impl/insts/normalisation/normalisation_f.cu ${A} &

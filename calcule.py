@@ -1,16 +1,14 @@
 from os import system
 import struct as st
 
-from CONTEXTE import *
+def lire(bins, taille):
+	I = st.calcsize(taille)
+	return list(st.unpack(taille, bytes(bins[:I]))), bins[I:]
 
-def calcule(donnees, NOM, MEGA_T):
-	prixs = [float(c) for _,o,h,l,c,vB,vU in donnees]
-
-	system(f"python3 -m prixs.ecrire_multi_sources prixs/{NOM}USDT.csv")
-
-	system(f"python3 -m prixs.dar PRIXS={len(prixs)} prixs/tester_model_donnee.bin bitgetBTC")
-
-	system("rm les_predictions.bin")
+def calcule(HEURES, d='1H'):
+	#system(f"python3 données_bitget.py {d} {HEURES} bitgetBTCUSDT.csv")
+	
+	system("./prog_btcusdt bitgetBTCUSDT.csv dar_tester_le_model.bin")
 
 	####################################################################################
 
@@ -19,10 +17,11 @@ def calcule(donnees, NOM, MEGA_T):
 	with open("les_predictions.bin", 'rb') as co:
 		bins = co.read()
 		#
-		I = int( int(len(bins)/4) / 3)
-		#
-		les_predictions = st.unpack('f'*I, bins[0*4*I:1*4*I])
-		les_delats      = st.unpack('f'*I, bins[1*4*I:2*4*I])
-		les_prixs       = st.unpack('f'*I, bins[2*4*I:3*4*I])
+		(T,Y),           bins = lire(bins, 'II')
+		les_prixs,       bins = lire(bins, 'f'*T)
+		les_predictions, bins = lire(bins, 'f'*T*Y)
 
-	return les_predictions, les_delats, les_prixs
+	#system("rm les_predictions.bin bitgetBTCUSDT.csv dar_tester_le_model.bin")
+	system("rm les_predictions.bin dar_tester_le_model.bin")
+
+	return T, Y, les_predictions, les_prixs
