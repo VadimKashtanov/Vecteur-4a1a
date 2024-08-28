@@ -15,3 +15,7 @@ void sous__init_poids(Inst_t * inst) {
 void sous__pre_f(Inst_t * inst) {
 	
 };
+
+void sous__pre_batchique(Inst_t * inst) {
+	
+};

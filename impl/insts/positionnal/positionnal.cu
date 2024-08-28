@@ -15,3 +15,7 @@ void positionnal__init_poids(Inst_t * inst) {
 void positionnal__pre_f(Inst_t * inst) {
 	
 };
+
+void positionnal__pre_batchique(Inst_t * inst) {
+	
+};

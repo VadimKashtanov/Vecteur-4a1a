@@ -16,3 +16,7 @@ void concatenation__init_poids(Inst_t * inst) {
 void concatenation__pre_f(Inst_t * inst) {
 	
 };
+
+void concatenation__pre_batchique(Inst_t * inst) {
+	
+};

@@ -26,6 +26,9 @@ static Inst_t * lire_tete_instruction(FILE * fp) {
 	ret->P = calculer_P[ret->ID](ret->x_Y, ret->x_pos, ret->x_t, ret->Y, ret->params);
 	ret->L = calculer_L[ret->ID](ret->x_Y, ret->x_pos, ret->x_t, ret->Y, ret->params);
 
+	//
+	ret->espace_potentiel = 0;
+
 	return ret;
 };
 

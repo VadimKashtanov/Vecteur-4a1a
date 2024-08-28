@@ -36,3 +36,7 @@ void matmul_poid_AP__init_poids(Inst_t * inst) {
 void matmul_poid_AP__pre_f(Inst_t * inst) {
 	
 };
+
+void matmul_poid_AP__pre_batchique(Inst_t * inst) {
+	
+};

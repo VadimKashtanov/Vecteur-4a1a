@@ -18,3 +18,7 @@ void activation_poid__init_poids(Inst_t * inst) {
 void activation_poid__pre_f(Inst_t * inst) {
 	
 };
+
+void activation_poid__pre_batchique(Inst_t * inst) {
+	
+};

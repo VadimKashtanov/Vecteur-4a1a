@@ -16,3 +16,7 @@ void canalisation__init_poids(Inst_t * inst) {
 void canalisation__pre_f(Inst_t * inst) {
 	
 };
+
+void canalisation__pre_batchique(Inst_t * inst) {
+	
+};

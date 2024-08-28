@@ -10,7 +10,7 @@ static __global__ void kerd_drop_vecteur(
 	//
 	uint VECT, uint POURCENT,
 	//
-	uint graine,
+	float * matrice,
 	uint entrainnement)
 {
 	uint _y = threadIdx.x + blockIdx.x * blockDim.x;
@@ -20,11 +20,16 @@ static __global__ void kerd_drop_vecteur(
 		uint tx0 = t_MODE(_t, mega_t-x0_t);
 		uint ty  = t_MODE(_t, mega_t     );
 		//
-		uint graine_vectorielle = graine + (_y - (_y%VECT))/VECT;
-		//
-		uint valeur_pseudo_rnd = pseudo_rnd(graine_vectorielle) % 100;
-		//
-		y[ty*Y + _y] = ((valeur_pseudo_rnd<POURCENT && entrainnement) ? 0.0 : x0[tx0*X0 + _y]);
+		if (entrainnement) {
+			/*if (matrice[_y] == 0.0) {
+				y[ty*Y + _y] = 0.0;
+			} else {
+				y[ty*Y + _y] = x0[tx0*X0 + _y];
+			}*/
+			y[ty*Y + _y] = x0[tx0*X0 + _y] * matrice[_y];
+		} else {
+			y[ty*Y + _y] = x0[tx0*X0 + _y];
+		}
 	};
 }
 
@@ -33,7 +38,7 @@ void drop_vecteur__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, ui
 		VECT     = inst->params[0],	\
 		POURCENT = inst->params[1];
 	//
-	uint graine = ((uint*)inst->espace_potentiel)[0];
+	float * matrice = (float*)inst->espace_potentiel;
 	//
 	uint x0_t = inst->x_t[0];
 	uint Y  = inst->Y;
@@ -51,7 +56,7 @@ void drop_vecteur__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, ui
 			//
 			VECT, POURCENT,
 			//
-			graine,
+			matrice,
 			entrainnement
 		);
 	} else {

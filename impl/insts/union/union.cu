@@ -16,3 +16,7 @@ void union__init_poids(Inst_t * inst) {
 void union__pre_f(Inst_t * inst) {
 	
 };
+
+void union__pre_batchique(Inst_t * inst) {
+	
+};

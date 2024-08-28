@@ -29,6 +29,7 @@
 
 #include "insts/isomme.cuh"
 #include "insts/imaxmin.cuh"
+#include "insts/imax.cuh"
 
 #include "insts/batch_miu.cuh"
 #include "insts/batch_variance.cuh"
@@ -38,6 +39,7 @@
 
 #include "insts/normalisation.cuh"
 #include "insts/div_scal.cuh"
+#include "insts/sous_scal.cuh"
 
 #include "insts/concatenation.cuh"
 #include "insts/canalisation.cuh"
@@ -72,6 +74,7 @@ fonctions_insts_t fonctions_insts[INSTS] = {
 	//
 	fi_isomme,
 	fi_imaxmin,
+	fi_imax,
 	//
 	fi_batch_miu,
 	fi_batch_variance,
@@ -81,6 +84,7 @@ fonctions_insts_t fonctions_insts[INSTS] = {
 	//
 	fi_normalisation,
 	fi_div_scal,
+	fi_sous_scal,
 	//
 	fi_concatenation,
 	fi_canalisation,
@@ -103,6 +107,7 @@ inst_df_f _df_inst[INSTS] = {};
 inst_f  init_poids[INSTS] = {};
 //
 inst_f  pre_f[INSTS] = {};
+inst_f  pre_batchique[INSTS] = {};
 
 //	-------------------------------
 
@@ -120,6 +125,7 @@ void init_listes_instructions() {
 		//
 		init_poids[i] = fonctions_insts[i].init_poids;
 		//
-		pre_f[i] = fonctions_insts[i].pre_f;
+		pre_f[i]         = fonctions_insts[i].pre_f;
+		pre_batchique[i] = fonctions_insts[i].pre_batchique;
 	};
 };

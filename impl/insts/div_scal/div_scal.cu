@@ -19,3 +19,7 @@ void div_scal__init_poids(Inst_t * inst) {
 void div_scal__pre_f(Inst_t * inst) {
 	
 };
+
+void div_scal__pre_batchique(Inst_t * inst) {
+	
+};

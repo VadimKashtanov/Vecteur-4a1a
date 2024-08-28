@@ -22,3 +22,7 @@ void transpose2d__init_poids(Inst_t * inst) {
 void transpose2d__pre_f(Inst_t * inst) {
 	
 };
+
+void transpose2d__pre_batchique(Inst_t * inst) {
+	
+};

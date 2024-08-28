@@ -15,3 +15,7 @@ void somme__init_poids(Inst_t * inst) {
 void somme__pre_f(Inst_t * inst) {
 	
 };
+
+void somme__pre_batchique(Inst_t * inst) {
+	
+};

@@ -19,3 +19,7 @@ void isomme__init_poids(Inst_t * inst) {
 void isomme__pre_f(Inst_t * inst) {
 	FOR(0, mega_t, MEGA_T) inst_zero_mega_t(inst, mega_t);
 };
+
+void isomme__pre_batchique(Inst_t * inst) {
+	
+};

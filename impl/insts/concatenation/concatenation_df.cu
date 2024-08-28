@@ -9,7 +9,7 @@ static void d_kerd__concatenation(
 	//
 	uint mega_t,
 	//
-	uint Ax, uint Ay, uint Ay_c0, uint C0)
+	uint Ax, uint Ay, uint C0)
 {
 	uint _y = threadIdx.x + blockIdx.x * blockDim.x;
 	uint _t = threadIdx.y + blockIdx.y * blockDim.y;
@@ -18,22 +18,19 @@ static void d_kerd__concatenation(
 		uint tx0 = t_MODE(_t, mega_t-x0_t);
 		uint ty  = t_MODE(_t, mega_t     );
 		//
-		uint __x = tx0*X0 + _y;
-		//float _x = x0[__x];
+		uint _c0 = (_y - (_y % (Ax*Ay))) / (Ax*Ay);
+		_y -= _c0*Ax*Ay;
 		//
-		uint c0 = (_y - (_y%(Ax*Ay*Ay_c0)))/(Ax*Ay*Ay_c0);
-		_y -= c0*Ax*Ay*Ay_c0;
-		uint c0_Ay_c0 = (_y - (_y%(Ax*Ay)))/(Ax*Ay);
-		_y -= c0_Ay_c0*Ax*Ay;
-		uint y_Ay = (_y - (_y%(Ax)))/(Ax);
-		_y -= y_Ay*Ax;
-		uint x_Ax = (_y - (_y%1))/1;
-		_y -= x_Ax;
+		uint _y_ = (_y - (_y%Ax)) / Ax;
+		_y -= _y_*Ax;
+		//
+		uint _x_ = (_y - 0) / 1;
+		_y -= _x_*1;
 		//
 		assert(_y == 0);
 		//
-		float _dy = dy[ty*Y + c0*Ax*Ay*Ay_c0 + y_Ay*(Ay_c0*Ax) + c0_Ay_c0*Ax + x_Ax];
-		atomicAdd(&dx0[__x], _dy * 1);
+		//y[ty*Y + _y_*(Ax*C0) + _c0*Ax + _y_];
+		atomicAdd(&dx0[tx0*X0 + _c0*Ax*Ay + _y_*Ax + _x_], dy[ty*Y + _y_*(Ax*C0) + _c0*Ax + _x_]);
 	};
 };
 
@@ -43,8 +40,7 @@ void concatenation__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__
 	uint \
 		Ax    = inst->params[0],	\
 		Ay    = inst->params[1],	\
-		Ay_c0 = inst->params[2],	\
-		C0    = inst->params[3];
+		C0    = inst->params[2];
 	//
 	bool x0_existe = (mega_t != 0 ? true : (x0_t != 1));
 	//
@@ -57,7 +53,7 @@ void concatenation__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__
 			//
 			mega_t,
 			//
-			Ax, Ay, Ay_c0, C0
+			Ax, Ay, C0
 		);
 	} else {
 		//	rien

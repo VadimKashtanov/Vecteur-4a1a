@@ -17,3 +17,7 @@ void softmax__init_poids(Inst_t * inst) {
 void softmax__pre_f(Inst_t * inst) {
 	
 };
+
+void softmax__pre_batchique(Inst_t * inst) {
+	
+};

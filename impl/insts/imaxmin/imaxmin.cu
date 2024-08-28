@@ -49,3 +49,7 @@ void imaxmin__pre_f(Inst_t * inst) {
 		);
 	}
 };
+
+void imaxmin__pre_batchique(Inst_t * inst) {
+	
+};

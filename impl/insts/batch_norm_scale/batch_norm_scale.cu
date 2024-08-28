@@ -25,3 +25,7 @@ void batch_norm_scale__init_poids(Inst_t * inst) {
 void batch_norm_scale__pre_f(Inst_t * inst) {
 	
 };
+
+void batch_norm_scale__pre_batchique(Inst_t * inst) {
+	
+};
