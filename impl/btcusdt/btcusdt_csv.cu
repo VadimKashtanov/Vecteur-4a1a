@@ -100,10 +100,11 @@ float * __diff(float * l) {
 	return ret;
 };
 
-float * __hausse(float * l) {
+float * __hausse(float * l, float heure) {
 	float * ret = alloc<float>(global_T);
-	ret[0] = 0;
-	FOR(1, i, global_T) ret[i] = l[i] / l[i-1] - 1;
+	uint _heure = (uint)roundf(heure);
+	FOR(0, i, _heure) ret[i] = 0;
+	FOR(_heure, i, global_T) ret[i] = l[i] / l[i-_heure] - 1;
 	return ret;
 };
 
@@ -209,9 +210,17 @@ float * __stoch_rsi(float * l, uint n) {
 float * volBU(float * vbtc, float * vusdt, float * prix_btc_en_usdt) {
 	float * ret = alloc<float>(global_T);
 	FOR(0, i, global_T) {
-		float a_moins_b = vbtc[i]*prix_btc_en_usdt[i] / vusdt[i];
+		float a_moins_b = vbtc[i]*prix_btc_en_usdt[i] - vusdt[i];
 		float a_plus__b = (vbtc[i]*prix_btc_en_usdt[i]+vusdt[i])/2;
-		ret[i] = a_moins_b;///a_plus__b;
+		ret[i] = a_moins_b/a_plus__b;
+	}
+	return ret;
+};
+
+float * __log(float * f) {
+	float * ret = alloc<float>(global_T);
+	FOR(0, i, global_T) {
+		ret[i] = logf(fabs(f[i]))*(f[i]>=0 ? 1:-1);
 	}
 	return ret;
 };
@@ -231,6 +240,8 @@ void __lignes_vers_ema___api_bitget_v0(Ligne_t ** lignes, uint N, char * dar) {
 	//
 	uint L = 13;
 	//
+#define MAX_INTERV_MULTIPLE 1
+	//
 	float * lignes_interv[I][L];
 	//
 	FOR(0, i, I) {
@@ -243,23 +254,23 @@ void __lignes_vers_ema___api_bitget_v0(Ligne_t ** lignes, uint N, char * dar) {
 		//
 		float heure = (float)INTERVS[i];
 		//
-		float * prixs1      = __hausse(            prixs         ); multiplier(prixs1,  50.0);
-		float * prixs4      = __hausse(        ema(prixs, 4.0   )); multiplier(prixs4, 50.0);
-		float * delta_26_12 =         (__delta_ema(prixs, 26, 12)); multiplier(delta_26_12, 0.0025);
-		float * delta_13_6  =         (__delta_ema(prixs, 13,  6)); multiplier(delta_13_6, 0.0005);
+		float * prixs1      = __hausse(            prixs         ,heure);  multiplier(prixs1,  25.0);
+		float * prixs4      = __hausse(        ema(prixs, 4.0   ),heure);  multiplier(prixs4, 25.0);
+		float * delta_26_12 =         (__delta_ema(prixs, 26, 12));  multiplier(delta_26_12, 0.0007);
+		float * delta_13_6  =         (__delta_ema(prixs, 13,  6));  multiplier(delta_13_6, 0.0005);
 		//
-		float * macd1       =       (__macd     (prixs, 1     )); multiplier(macd1, 0.005);
-		float * macd4       =       (__macd     (prixs, 4     )); multiplier(macd4, 0.005);
+		float * macd1       =         (__macd     (prixs, 1     ));  multiplier(macd1, 0.001);
+		float * macd4       =    __log(__macd     (prixs, 4     ));  multiplier(macd4, 0.25);
 		//
-		float * chiffre1k   =       (__chiffre  (prixs, 1000 )); multiplier(chiffre1k, 1.0);
-		float * chiffre10k  =       (__chiffre  (prixs, 10000)); multiplier(chiffre10k, 1.0);
+		float * chiffre1k   =         (__chiffre  (prixs, 1000 ));   multiplier(chiffre1k, 1.0);
+		float * chiffre10k  =         (__chiffre  (prixs, 10000));   multiplier(chiffre10k, 1.0);
 		//
-		float * rsi14       =       (__rsi      (prixs, 14     )); multiplier(rsi14, 0.01);
-		float * stoch_rsi14 =       (__stoch_rsi(prixs, 14     )); multiplier(stoch_rsi14, 1.0);
+		float * rsi14       =         (__rsi      (prixs, 14     )); multiplier(rsi14, 0.01);
+		float * stoch_rsi14 =         (__stoch_rsi(prixs, 14     )); multiplier(stoch_rsi14, 1.0);
 		//
-		float * volume_A    = __hausse(        ema(vol_BTC ,10)); multiplier(volume_A, 2.0);
-		float * volume_B    = __hausse(        ema(vol_USDT,10)); multiplier(volume_B, 2.0);
-		float * volume_AB   = ema(volBU(vol_BTC,vol_USDT,prixs),10); multiplier(volume_AB, 0.01);
+		float * volume_A    = __hausse(        ema(vol_BTC ,10),heure);    multiplier(volume_A, 2.0);
+		float * volume_B    = __hausse(        ema(vol_USDT,10),heure);    multiplier(volume_B, 2.0);
+		float * volume_AB   = ema(volBU(vol_BTC,vol_USDT,prixs),10); multiplier(volume_AB, 500);
 		//
 		//
 		lignes_interv[i][ 0] = prixs1;
@@ -278,7 +289,7 @@ void __lignes_vers_ema___api_bitget_v0(Ligne_t ** lignes, uint N, char * dar) {
 	}
 	MSG("Lignes écrites !");
 	//
-	uint DEPART = INTERVS[I-1] * N;
+	uint DEPART = MAX_INTERV_MULTIPLE * INTERVS[I-1] * N;
 	//
 	//##########################################################
 	//###############  Ecrire le dar.bin  ######################

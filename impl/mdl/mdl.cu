@@ -25,6 +25,8 @@ Mdl_t * cree_mdl_depuis_st_bin(char * fichier) {
 	//
 	printf("Entrée=%i, Sortie=%i\n", ret->entree, ret->sortie);
 	//
+	ret->init_pre_batchique = 0;
+	//
 	return ret;
 };
 
@@ -77,7 +79,7 @@ void liberer_mdl(Mdl_t * mdl) {
 
 //	-- Verification --
 void mdl_verif(Mdl_t * mdl, BTCUSDT_t * btcusdt) {
-	ASSERT(mdl->inst[mdl->entree]->ID == 0);
+	//ASSERT(mdl->inst[mdl->entree]->ID == 0);
 
 	FOR(0, i, mdl->insts) {
 		FOR(0, j, inst_Xs[mdl->inst[i]->ID]) {
@@ -91,6 +93,8 @@ void mdl_verif(Mdl_t * mdl, BTCUSDT_t * btcusdt) {
 		}
 	}
 
-	ASSERT(btcusdt->X == mdl->inst[mdl->entree]->x_Y[0]);
+	if (mdl->inst[mdl->entree]->ID == 0) {
+		ASSERT(btcusdt->X == mdl->inst[mdl->entree]->x_Y[0]);
+	}
 	ASSERT(btcusdt->Y == mdl->inst[mdl->sortie]->Y     );
 };

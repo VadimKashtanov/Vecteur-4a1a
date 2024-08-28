@@ -18,6 +18,10 @@ void opti(
 	uint        methode,
 	float         alpha)
 {
+	//	Ceci initie tout avant le batch (dropout ...)
+	mdl_pre_batch(mdl);
+
+
 	uint nombre_de_poids = 0;
 	FOR(0, i, mdl->insts) nombre_de_poids += mdl->inst[i]->P;
 
@@ -43,6 +47,7 @@ void opti(
 	printf("alpha=%f, max_abs_grad=%f => nouveau alpha=%f  (poids=%i)\n", alpha, _max_abs_grad, alpha / _max_abs_grad, nombre_de_poids);
 	//
 	//	--- Opti  ---
+	//
 	FOR(0, i, I) {
 		if (i != 0) {
 			//	dF(x)

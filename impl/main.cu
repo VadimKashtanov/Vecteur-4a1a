@@ -91,7 +91,7 @@ int main() {
 	//	=========================================================
 	//	=========================================================
 	//	=========================================================
-	BTCUSDT_t * btcusdt = cree_btcusdt("prixs/dar.bin");
+	BTCUSDT_t * btcusdt = cree_btcusdt("dar.bin");
 
 	//	=========================================================
 	//	=========================================================
@@ -110,8 +110,8 @@ int main() {
 	Mdl_t * mdl = ouvrire_mdl("mdl.bin");
 	plumer_model(mdl);
 	//montrer_Y_du_model_temporel(mdl, btcusdt);
-	//montrer_Y_du_model_sans_temps(mdl, btcusdt);
-	//tester_le_model(mdl, btcusdt);
+	montrer_Y_du_model_sans_temps(mdl, btcusdt);
+	tester_le_model(mdl, btcusdt);
 
 	//	=========================================================
 	//	=========================================================
@@ -125,14 +125,14 @@ int main() {
 		printf(" === Echope %i ===\n", e);
 		
 		//
-		uint I        = 90;
+		uint I        = 30;
 		uint tous_les = 10;
 
 		//
 		srand(time(NULL));
 		uint ts[GRAND_T];
 		FOR(0, t, GRAND_T)
-			ts[t] = rand() % (btcusdt->T - MEGA_T - 1 - un_mois);
+			ts[t] = rand() % (btcusdt->T - MEGA_T - 1 - 1 - un_mois);
 		uint * ts__d = cpu_vers_gpu<uint>(ts, GRAND_T);
 
 		//

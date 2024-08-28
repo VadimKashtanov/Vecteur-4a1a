@@ -4,19 +4,27 @@
 
 void plumer_model  (Mdl_t * mdl) {
 	printf(" === Mdl_t : INSTS=%i ===\n", mdl->insts);
+	//
+	uint _max_xs = 0;
+	FOR(0, i, mdl->insts) _max_xs = MAX2(_max_xs, inst_Xs[mdl->inst[i]->ID]);
+	uint _max_params = 0;
+	FOR(0, i, mdl->insts) _max_params = MAX2(_max_params, inst_PARAMS[mdl->inst[i]->ID]);
+	//
 	FOR(0, i, mdl->insts) {
 		Inst_t * inst = mdl->inst[i];
 		uint ID = inst->ID;
 		//
-		printf("%3.i| ID=%3.i Y=%5.i P=%6.i L=%6.i : ", i, ID, inst->Y, inst->P, inst->L);
+		if (i % 2 == 0) printf("\033[2;1m");
+		//
+		printf("%3.i| ID=%3.i Y=%6.i P=%6.i L=%6.i : ", i, ID, inst->Y, inst->P, inst->L);
 
-		printf("x_Y={"); FOR(0, j, inst_Xs[ID]) printf("%5.i,", inst->x_Y[j]); printf("}, ");
-		printf("x_pos={"); FOR(0, j, inst_Xs[ID]) printf("%3.i,", inst->x_pos[j]); printf("}, ");
-		printf("x_t={"); FOR(0, j, inst_Xs[ID]) printf("%i,", inst->x_t[j]); printf("}, ");
-
-		printf("params={"); FOR(0, j, inst_PARAMS[ID]) printf("%i,", inst->params[j]); printf("}, ");
-
-		printf(" inst=(%s)\n", inst_Nom[ID]);
+		printf("x_Y={");    FOR(0, j, inst_Xs[ID]    ) printf("%6.i,", inst->x_Y[j]  ); FOR(inst_Xs[ID], j, _max_xs) printf("%6.i,",0); printf("}, ");
+		printf("x_pos={");  FOR(0, j, inst_Xs[ID]    ) printf("%3.i,", inst->x_pos[j]); FOR(inst_Xs[ID], j, _max_xs) printf("%3.i,",0); printf("}, ");
+		printf("x_t={");    FOR(0, j, inst_Xs[ID]    ) printf("%i,",  inst->x_t[j]   ); FOR(inst_Xs[ID], j, _max_xs) printf("%i,",  0); printf("}, ");
+		//
+		printf("params={"); FOR(0, j, inst_PARAMS[ID]) printf("%4.i,", inst->params[j]);FOR(inst_PARAMS[ID], j, _max_params) printf("%4.i,", 0);printf("}, ");
+		//
+		printf(" inst=(%20s)\033[0m\n", inst_Nom[ID]);
 	}
 
 	//	Plumer l'ordre pour le shéma optimisé

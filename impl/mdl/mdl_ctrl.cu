@@ -161,3 +161,13 @@ float mdl_max_abs_grad(Mdl_t * mdl) {
 	//
 	return _max;
 };
+
+void mdl_pre_batch(Mdl_t * mdl) {
+	mdl->init_pre_batchique = 1;
+	//
+	FOR(0, i, mdl->insts) {
+		pre_batchique[mdl->inst[i]->ID](
+			mdl->inst[i]
+		);
+	};
+}

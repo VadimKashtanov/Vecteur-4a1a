@@ -26,7 +26,7 @@ static __global__ void k__pourcent_btcusdt_stricte(
 			uint wpos = t_btcusdt*Y + 0; float _w = w[wpos];
 			uint ypos = ty       *Y + 0; float _y = y[ypos];
 			//
-			float K = powf(prixs[t_btcusdt+1]/prixs[t_btcusdt] - 1, coef);
+			float K = powf(100*fabs(prixs[t_btcusdt+1]/prixs[t_btcusdt] - 1), coef);
 			//
 			float a_t_il_predit = (float)(sng(_y) == sng(_w));
 			//

@@ -97,7 +97,7 @@ void mdl_optimisation(Mdl_t * mdl) {
 		//
 		optimisable = false;
 		//
-		ASSERT(mdl->inst[0]->ID == 0);
+		//ASSERT(mdl->inst[0]->ID == 0);
 		FOR(1, i, I) {//1 car i_Entree n'est pas optimisable
 			//# Si entrée (xt!=1) de l'inst est dans la ligne au dessus -> OK. Peut pas faire mieux.
 			//# Sinon -> Optimisable=True & Monter l'inst d'une ligne. Et Break

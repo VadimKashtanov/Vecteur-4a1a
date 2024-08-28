@@ -19,10 +19,12 @@ void tester_le_model(Mdl_t * mdl, BTCUSDT_t * btcusdt) {
 	FOR(0, t, GRAND_T) ts[t] = rand() % (btcusdt->T - MEGA_T);
 	uint * ts__d = cpu_vers_gpu<uint>(ts, GRAND_T);
 	//
+	//
+	mdl_pre_batch(mdl);
+	//
 	mdl_verif(mdl, btcusdt);
-	//
-	//
 	mdl_allez_retour(mdl, btcusdt, ts__d);
+	//
 	float * grad_cuda[mdl->insts];
 	FOR(0, i, mdl->insts) {
 		if (mdl->inst[i]->P > 0)
@@ -33,9 +35,15 @@ void tester_le_model(Mdl_t * mdl, BTCUSDT_t * btcusdt) {
 	INIT_CHRONO(s)
 	DEPART_CHRONO(s)
 	//
-	float S = mdl_S(mdl, btcusdt, ts__d);
+	//float S = mdl_S(mdl, btcusdt, ts__d);
+	mdl_f(mdl, btcusdt, ts__d, true);
+	float S = f_df_btcusdt(
+		btcusdt,
+		mdl->inst[mdl->sortie]->y__d,
+		mdl->inst[mdl->sortie]->dy__d,
+		ts__d);
 	//
-	float _1E5 = 3e-2;//5e-3;
+	float _1E5 = 5e-3;
 	uint lp = 0;
 	FOR(0, i, mdl->insts) {
 		printf("#### INSTRUCTION %i (%s Y=%i) ####\n",
@@ -47,7 +55,12 @@ void tester_le_model(Mdl_t * mdl, BTCUSDT_t * btcusdt) {
 
 			//	f(x + 1e-5)
 			plus_1e5(mdl->inst[i]->p__d, p, +_1E5);
-			float S1e5 = mdl_S(mdl, btcusdt, ts__d);
+			mdl_f(mdl, btcusdt, ts__d, true);
+			float S1e5 = f_df_btcusdt(
+				btcusdt,
+				mdl->inst[mdl->sortie]->y__d,
+				mdl->inst[mdl->sortie]->dy__d,
+				ts__d);
 			plus_1e5(mdl->inst[i]->p__d, p, -_1E5);
 
 			//	df

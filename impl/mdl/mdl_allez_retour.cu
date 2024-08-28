@@ -3,6 +3,8 @@
 #include "../../impl_template/tmpl_etc.cu"
 
 float mdl_allez_retour(Mdl_t * mdl, BTCUSDT_t * btcusdt, uint * ts__d) {
+	ASSERT(mdl->init_pre_batchique == 1);
+	//
 	mdl_f (mdl, btcusdt, ts__d, true);
 	//
 	mdl_dy_zero(mdl);

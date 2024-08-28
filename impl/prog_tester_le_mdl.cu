@@ -1,139 +1,119 @@
 #include "main.cuh"
 
 #include "../impl_template/tmpl_etc.cu"
-/*
-__global__
-static void kerd_lire(float * p__d, uint p, float * val) {
-	val[0] = p__d[p];
-};
 
-static float lire(float * p__d, uint p) {
-	float * val = cudalloc<float>(1);
-	kerd_lire<<<1,1>>>(p__d, p, val);
-	ATTENDRE_CUDA();
-	//
-	float * _ret = gpu_vers_cpu<float>(val, 1);
-	float ret = _ret[0];
-	free(_ret);cudafree<float>(val);
-	//
-	return ret;
-};
-
-static float ** toutes_les_predictions(Mdl_t * mdl, BTCUSDT_t * btcusdt) {
-	//
-	uint I = btcusdt->I;
+static float * toutes_les_predictions_T_plus_que_GRAND_T(Mdl_t * mdl, BTCUSDT_t * btcusdt) {
 	uint T = btcusdt->T;
-	uint L = btcusdt->L;
-	uint N = btcusdt->N;
+	uint Y = mdl->inst[mdl->sortie]->Y;
 	//
-	float ancien_u = 100.0;
-	float u = 100.0;
+	uint gm  = GRAND_T*MEGA_T;
+	uint _T_ = (T%gm==0 ?     T/gm   :   (T - (T%gm) + gm) / gm   );
 	//
-	ASSERT(btcusdt->T % MEGA_T == 0);
+	float * les_predictions = alloc<float>(T*Y);
 	//
-	uint _T     = (btcusdt->T - (btcusdt->T % MEGA_T))/MEGA_T;
-	uint PREDS = _T * MEGA_T;
-	//
-	float * les_predictions = alloc<float>(PREDS);
-	float * les_deltas      = alloc<float>(PREDS);
-	float * les_prixs       = alloc<float>(PREDS);
-	
-	//
-	uint lp = 0;
-	//
-	printf("[t=0] u = %f $\n", u);
-	FOR(0, _t_, _T) {
+	FOR(0, _t_, _T_) {
 		//
 		uint ts[GRAND_T];
-		FOR(0, t, GRAND_T) ts[t] = _t_*MEGA_T + 0;
-		//
+		FOR(0, t, GRAND_T) ts[t] = (_t_*gm + t*MEGA_T) % T;
 		uint * ts__d = cpu_vers_gpu<uint>(ts, GRAND_T);
 		
 		//
 		mdl_f(mdl, btcusdt, ts__d, false);
+
 		//
 		uint Y    = mdl->inst[mdl->sortie]->Y;
 		float * y = gpu_vers_cpu<float>(mdl->inst[mdl->sortie]->y__d, GRAND_T*MEGA_T*Y);
+		
 		//
-		FOR(0, mega_t, MEGA_T) {
-			uint ty = t_MODE(0, mega_t);
-			//
-			uint pos = _t_*MEGA_T + mega_t;
-			float p0 = lire(btcusdt->prixs__d, _t_  );
-			float p1 = (_t_ == _T-1 ? p0 : lire(btcusdt->prixs__d, _t_+1));
-			//
-			les_predictions[pos] = y[ty*Y + 0];
-			les_deltas     [pos] = p1/p0 - 1.0;
-			les_prixs      [pos] = p0;
-			//
-			u += u * 10 * les_predictions[pos] * les_deltas[pos];
-			if (u < 0) u = 0;
+		FOR(0, grand_t, GRAND_T) {
+			FOR(0, mega_t, MEGA_T) {
+				if (_t_*gm + grand_t*MEGA_T + mega_t < T) {
+					uint ty = t_MODE(grand_t, mega_t);
+					//
+					FOR(0, l, Y) les_predictions[(_t_*gm + grand_t*MEGA_T + mega_t)*Y + l] = y[ty*Y + l];
+				}
+			}
 		}
 
 		//
 		cudafree<uint>(ts__d);
 		free(y);
-		printf("[t=%i] u = %f $ ", 1+_t_, u);
-		if      (ancien_u > u) printf("\033[91m-%.2g$\033[0m", abs(ancien_u-u));
-		else if (ancien_u < u) printf("\033[92m+%.2g$\033[0m", abs(ancien_u-u));
-		else                   printf("\033[2m  ?\033[0m");
-		printf("\n");
-		ancien_u = u;
 	};
 	//
-	float ** ret = alloc<float*>(3);
-	ret[0] = les_predictions;
-	ret[1] = les_deltas     ;
-	ret[2] = les_prixs      ;
-	return ret;
-};*/
+	return les_predictions;
+};
 
-int main() {
-/*	srand(0);
+static float * toutes_les_predictions_T_moins_que_GRAND_T(Mdl_t * mdl, BTCUSDT_t * btcusdt) {
+	uint T = btcusdt->T;
+	uint Y = mdl->inst[mdl->sortie]->Y;
+	//
+	float * les_predictions = alloc<float>(T*Y);
+	//
+	uint ts[GRAND_T];
+	FOR(0, t, GRAND_T) ts[t] = t % btcusdt->T;
+	uint * ts__d = cpu_vers_gpu<uint>(ts, GRAND_T);
+	
+	//
+	mdl_f(mdl, btcusdt, ts__d, false);
+
+	//
+	float * y = gpu_vers_cpu<float>(mdl->inst[mdl->sortie]->y__d, GRAND_T*MEGA_T*Y);
+		
+	//
+	FOR(0, t, btcusdt->T) {
+		uint ty = t_MODE(t, 0);
+		//
+		FOR(0, l, Y) les_predictions[t*Y + l] = y[ty*Y + l];
+	}
+
+	//
+	cudafree<uint>(ts__d);
+	free(y);
+	//
+	return les_predictions;
+};
+
+int main(int argc, char ** argv) {
+	//	=========================================================
+	srand(0);
 	init_listes_instructions();
 	ecrire_structure_generale("structure_generale.bin");
 	verif_insts();
 
 	//	=========================================================
-	//	=========================================================
-	//	=========================================================
-	BTCUSDT_t * btcusdt = cree_btcusdt("prixs/tester_model_donnee.bin");
+	BTCUSDT_t * btcusdt = cree_btcusdt("dar_tester_le_model.bin");
 
 	//	=========================================================
-	//	=========================================================
-	//	=========================================================
-
 	//	--- Mdl_t ---
 	Mdl_t * mdl = ouvrire_mdl("mdl.bin");
+	//
+	float * preds;
+	if (MEGA_T == 1) {
+		if      (btcusdt->T >= GRAND_T) preds = toutes_les_predictions_T_plus_que_GRAND_T(mdl, btcusdt);
+		else if (btcusdt->T <  GRAND_T) preds = toutes_les_predictions_T_moins_que_GRAND_T(mdl, btcusdt);
+	} else {
+		ASSERT(btcusdt->T % (GRAND_T*MEGA_T));
+		preds = toutes_les_predictions_T_plus_que_GRAND_T(mdl, btcusdt);
+	}
 
-	float ** __lp = toutes_les_predictions(mdl, btcusdt);
-	float * preds  = __lp[0];
-	float * deltas = __lp[1];
-	float * prixs  = __lp[2];
+	//
+	float * prixs = gpu_vers_cpu<float>(btcusdt->prixs__d, btcusdt->T);
+
+	//
+	uint Y = mdl->inst[mdl->sortie]->Y;
 
 	FILE * fp = FOPEN("les_predictions.bin", "wb");
 	//
-	uint T     = (btcusdt->T - (btcusdt->T % MEGA_T))/MEGA_T;
-	uint PREDS = T * MEGA_T;
-	//
-	FWRITE(preds, sizeof(float), PREDS, fp);	//les prédictions
-	free(preds);
-	//
-	FWRITE(deltas, sizeof(float), PREDS, fp);	//les déltas
-	free(deltas);
-	//
-	FWRITE(prixs, sizeof(float), PREDS, fp);	//les déltas
-	free(prixs);
+	FWRITE(&btcusdt->T, sizeof(uint),  1,            fp);
+	FWRITE(&Y,          sizeof(uint),  1,            fp);
+	FWRITE(prixs,       sizeof(float), btcusdt->T,   fp);
+	FWRITE(preds,       sizeof(float), btcusdt->T*Y, fp);
 	//
 	fclose(fp);
 
-	//	=========================================================
-	//	=========================================================
-	//	=========================================================
 	//
-	//plumer_le_score(mdl, btcusdt);
-
-	//
+	free(preds);
+	free(prixs);
 	liberer_mdl    (mdl    );
-	liberer_btcusdt(btcusdt);*/
+	liberer_btcusdt(btcusdt);
 };
