@@ -16,6 +16,7 @@ void sous__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint entra
 void sous__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void sous__pre_f(Inst_t * inst);
+void sous__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_sous = {
 	.Xs    =sous__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_sous = {
 	.f =sous__f,
 	.df=sous__df,
 	//
-	.pre_f=sous__pre_f
+	.pre_f=sous__pre_f,
+	.pre_batchique=sous__pre_batchique
 };

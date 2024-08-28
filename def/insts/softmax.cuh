@@ -15,6 +15,7 @@ void softmax__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint en
 void softmax__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void softmax__pre_f(Inst_t * inst);
+void softmax__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_softmax = {
 	.Xs    =softmax__Xs,
@@ -29,5 +30,6 @@ static fonctions_insts_t fi_softmax = {
 	.f =softmax__f,
 	.df=softmax__df,
 	//
-	.pre_f=softmax__pre_f
+	.pre_f=softmax__pre_f,
+	.pre_batchique=softmax__pre_batchique
 };

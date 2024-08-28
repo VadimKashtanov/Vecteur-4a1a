@@ -19,6 +19,7 @@ void batch_norm_scale__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t
 void batch_norm_scale__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void batch_norm_scale__pre_f(Inst_t * inst);
+void batch_norm_scale__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_batch_norm_scale = {
 	.Xs    =batch_norm_scale__Xs,
@@ -33,5 +34,6 @@ static fonctions_insts_t fi_batch_norm_scale = {
 	.f =batch_norm_scale__f,
 	.df=batch_norm_scale__df,
 	//
-	.pre_f=batch_norm_scale__pre_f
+	.pre_f=batch_norm_scale__pre_f,
+	.pre_batchique=batch_norm_scale__pre_batchique
 };

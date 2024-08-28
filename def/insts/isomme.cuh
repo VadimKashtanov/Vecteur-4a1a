@@ -16,6 +16,7 @@ void isomme__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint ent
 void isomme__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void isomme__pre_f(Inst_t * inst);
+void isomme__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_isomme = {
 	.Xs    =isomme__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_isomme = {
 	.f =isomme__f,
 	.df=isomme__df,
 	//
-	.pre_f=isomme__pre_f
+	.pre_f=isomme__pre_f,
+	.pre_batchique=isomme__pre_batchique
 };

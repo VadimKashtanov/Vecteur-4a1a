@@ -16,6 +16,7 @@ void entree__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint ent
 void entree__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void entree__pre_f(Inst_t * inst);
+void entree__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_entree = {
 	.Xs    =entree__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_entree = {
 	.f =entree__f,
 	.df=entree__df,
 	//
-	.pre_f=entree__pre_f
+	.pre_f=entree__pre_f,
+	.pre_batchique=entree__pre_batchique
 };

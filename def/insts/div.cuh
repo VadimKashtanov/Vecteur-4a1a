@@ -16,6 +16,7 @@ void div__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint entrai
 void div__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void div__pre_f(Inst_t * inst);
+void div__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_div = {
 	.Xs    =div__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_div = {
 	.f =div__f,
 	.df=div__df,
 	//
-	.pre_f=div__pre_f
+	.pre_f=div__pre_f,
+	.pre_batchique=div__pre_batchique
 };

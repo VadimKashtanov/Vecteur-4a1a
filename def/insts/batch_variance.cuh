@@ -18,6 +18,7 @@ void batch_variance__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, 
 void batch_variance__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void batch_variance__pre_f(Inst_t * inst);
+void batch_variance__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_batch_variance = {
 	.Xs    =batch_variance__Xs,
@@ -32,5 +33,6 @@ static fonctions_insts_t fi_batch_variance = {
 	.f =batch_variance__f,
 	.df=batch_variance__df,
 	//
-	.pre_f=batch_variance__pre_f
+	.pre_f=batch_variance__pre_f,
+	.pre_batchique=batch_variance__pre_batchique
 };

@@ -15,6 +15,7 @@ void select_vect__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uin
 void select_vect__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void select_vect__pre_f(Inst_t * inst);
+void select_vect__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_select_vect = {
 	.Xs    =select_vect__Xs,
@@ -29,5 +30,6 @@ static fonctions_insts_t fi_select_vect = {
 	.f =select_vect__f,
 	.df=select_vect__df,
 	//
-	.pre_f=select_vect__pre_f
+	.pre_f=select_vect__pre_f,
+	.pre_batchique=select_vect__pre_batchique
 };

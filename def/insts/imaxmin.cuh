@@ -16,6 +16,7 @@ void imaxmin__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint en
 void imaxmin__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void imaxmin__pre_f(Inst_t * inst);
+void imaxmin__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_imaxmin = {
 	.Xs    =imaxmin__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_imaxmin = {
 	.f =imaxmin__f,
 	.df=imaxmin__df,
 	//
-	.pre_f=imaxmin__pre_f
+	.pre_f=imaxmin__pre_f,
+	.pre_batchique=imaxmin__pre_batchique
 };

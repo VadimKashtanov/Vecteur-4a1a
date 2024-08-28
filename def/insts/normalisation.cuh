@@ -16,6 +16,7 @@ void normalisation__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, u
 void normalisation__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void normalisation__pre_f(Inst_t * inst);
+void normalisation__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_normalisation = {
 	.Xs    =normalisation__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_normalisation = {
 	.f =normalisation__f,
 	.df=normalisation__df,
 	//
-	.pre_f=normalisation__pre_f
+	.pre_f=normalisation__pre_f,
+	.pre_batchique=normalisation__pre_batchique
 };

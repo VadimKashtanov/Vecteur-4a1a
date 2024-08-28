@@ -16,6 +16,7 @@ void transpose2d__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uin
 void transpose2d__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void transpose2d__pre_f(Inst_t * inst);
+void transpose2d__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_transpose2d = {
 	.Xs    =transpose2d__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_transpose2d = {
 	.f =transpose2d__f,
 	.df=transpose2d__df,
 	//
-	.pre_f=transpose2d__pre_f
+	.pre_f=transpose2d__pre_f,
+	.pre_batchique=transpose2d__pre_batchique
 };

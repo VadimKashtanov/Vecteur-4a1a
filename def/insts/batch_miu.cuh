@@ -18,6 +18,7 @@ void batch_miu__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint 
 void batch_miu__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void batch_miu__pre_f(Inst_t * inst);
+void batch_miu__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_batch_miu = {
 	.Xs    =batch_miu__Xs,
@@ -32,5 +33,6 @@ static fonctions_insts_t fi_batch_miu = {
 	.f =batch_miu__f,
 	.df=batch_miu__df,
 	//
-	.pre_f=batch_miu__pre_f
+	.pre_f=batch_miu__pre_f,
+	.pre_batchique=batch_miu__pre_batchique
 };

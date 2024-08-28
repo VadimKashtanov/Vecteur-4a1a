@@ -53,7 +53,7 @@
 #define BORNE_HAUT_JAUNE 1.20
 #define BORNE_BAS__JAUNE 0.80
 //
-#define PLUME_CMP(a, b) do {if (fabs(a) < 0.000010 && fabs(b) < 0.000010) printf("\033[2m%+f === %+f\033[0m ", a, b); else {PLUME_CMP_COULEURS(a,b)};} while(0);
+#define PLUME_CMP(a, b) do {if (fabs(a) < 0.000030 && fabs(b) < 0.000030) printf("\033[2m%+f === %+f\033[0m ", a, b); else {PLUME_CMP_COULEURS(a,b)};} while(0);
 #define PLUME_CMP_COULEURS(a, b) do {float mul = (a/b);if (sng(a)!=sng(b)) {printf("\033[4m");}; if (mul <= BORNE_HAUT_VERT && mul >= BORNE_BAS__VERT) {printf("\033[92m");} else if (mul <= BORNE_HAUT_JAUNE && mul >= BORNE_BAS__JAUNE) {printf("\033[93m");} else {printf("\033[91m");};printf("%+f === %+f \033[0m", a, b);} while(0);
 
 //	= fread() & fwrite() sans les signaux de -Wall ou -O3 =
@@ -165,3 +165,8 @@ double secondes();
 //	===================================
 
 #define EXACTE(assertion) do {if (assertion) printf("\033[92m");else printf("\033[91m");} while(0);
+
+//	====================================
+
+//	X*Y -> Y*X
+#define TRANSPOSE(x,y,X,Y) (x*Y + y)

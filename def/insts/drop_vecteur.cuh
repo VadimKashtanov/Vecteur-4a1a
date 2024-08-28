@@ -19,6 +19,7 @@ void drop_vecteur__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, ui
 void drop_vecteur__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void drop_vecteur__pre_f(Inst_t * inst);
+void drop_vecteur__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_drop_vecteur = {
 	.Xs    =drop_vecteur__Xs,
@@ -33,5 +34,6 @@ static fonctions_insts_t fi_drop_vecteur = {
 	.f =drop_vecteur__f,
 	.df=drop_vecteur__df,
 	//
-	.pre_f=drop_vecteur__pre_f
+	.pre_f=drop_vecteur__pre_f,
+	.pre_batchique=drop_vecteur__pre_batchique
 };

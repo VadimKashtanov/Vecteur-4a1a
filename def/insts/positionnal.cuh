@@ -15,6 +15,7 @@ void positionnal__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uin
 void positionnal__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void positionnal__pre_f(Inst_t * inst);
+void positionnal__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_positionnal = {
 	.Xs    =positionnal__Xs,
@@ -29,5 +30,6 @@ static fonctions_insts_t fi_positionnal = {
 	.f =positionnal__f,
 	.df=positionnal__df,
 	//
-	.pre_f=positionnal__pre_f
+	.pre_f=positionnal__pre_f,
+	.pre_batchique=positionnal__pre_batchique
 };

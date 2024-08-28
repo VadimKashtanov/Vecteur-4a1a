@@ -18,6 +18,7 @@ void QKtDivClef__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint
 void QKtDivClef__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void QKtDivClef__pre_f(Inst_t * inst);
+void QKtDivClef__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_QKtDivClef = {
 	.Xs    =QKtDivClef__Xs,
@@ -32,5 +33,6 @@ static fonctions_insts_t fi_QKtDivClef = {
 	.f =QKtDivClef__f,
 	.df=QKtDivClef__df,
 	//
-	.pre_f=QKtDivClef__pre_f
+	.pre_f=QKtDivClef__pre_f,
+	.pre_batchique=QKtDivClef__pre_batchique
 };

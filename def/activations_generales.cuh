@@ -6,13 +6,13 @@ __device__
 static float ACTIVATION(uint activ, float s) {
 	float a;
 	//
-	if      (activ == 0) a = tanh(s);				//	tanh
-	else if (activ == 1) a = 1 / (1 + expf(-s));	//	logistique
-	else if (activ == 2) a = expf(-s*s);			//	gauss
-	else if (activ == 3) a = (s > 0 ? s : 0.0);		//	ReLu
-	else if (activ == 4) a = expf(s);				//	exp(x)
-	else if (activ == 5) a = s;						//	id(x)
-	else if (activ == 6) a = s/(1+expf(-s*1.7));	//	gelu(x)
+	if      (activ == 0) a = tanh(s);			//	tanh
+	else if (activ == 1) a = 1 / (1 + expf(-s));//	logistique
+	else if (activ == 2) a = expf(-s*s);		//	gauss
+	else if (activ == 3) a = (s > 0 ? s : 0.0);	//	ReLu
+	else if (activ == 4) a = expf(s);			//	exp(x)
+	else if (activ == 5) a = s;					//	id(x)
+	else if (activ == 6) a = s/(1+expf(-s*1.7));//	gelu(x)
 	else assert(0);
 	//
 	return a;

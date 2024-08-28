@@ -16,6 +16,7 @@ void somme__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint entr
 void somme__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void somme__pre_f(Inst_t * inst);
+void somme__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_somme = {
 	.Xs    =somme__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_somme = {
 	.f =somme__f,
 	.df=somme__df,
 	//
-	.pre_f=somme__pre_f
+	.pre_f=somme__pre_f,
+	.pre_batchique=somme__pre_batchique
 };

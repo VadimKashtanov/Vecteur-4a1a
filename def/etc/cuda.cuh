@@ -30,10 +30,10 @@ extern __shared__ float partage_dynamique[];	//no needs for size
 #define CONTROLE_CUDA(call) do { cudaError_t err = call; if (err != cudaSuccess)ERR("Erreure Cuda : %s", cudaGetErrorString(err));} while(0);
 
 //	70 divise en thread de 32 == 3 block (dont le derniers qui n'utilisera pas tous les threads). 70 == 2*32 + 6 == 3*32 - 26
-#define KER_DIV(TOTAL, div) ((((TOTAL - TOTAL%div)/div)) + (uint)(TOTAL%div>0))
+#define KER_DIV(TOTAL, div) (((((TOTAL) - (TOTAL)%div)/div)) + (uint)((TOTAL)%div>0))
 
 #define KERD KER_DIV
-#define  DIV(TOTAL, div) (TOTAL / div)
+#define  DIV(TOTAL, div) ((TOTAL) / div)
 
 //	Attendre la fin du kernel
 #define ATTENDRE_KER_CUDA() do{ CONTROLE_CUDA(cudaDeviceSynchronize()); CONTROLE_CUDA(cudaPeekAtLastError()); } while(0);

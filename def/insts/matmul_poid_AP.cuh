@@ -16,6 +16,7 @@ void matmul_poid_AP__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, 
 void matmul_poid_AP__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void matmul_poid_AP__pre_f(Inst_t * inst);
+void matmul_poid_AP__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_matmul_poid_AP = {
 	.Xs    =matmul_poid_AP__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_matmul_poid_AP = {
 	.f =matmul_poid_AP__f,
 	.df=matmul_poid_AP__df,
 	//
-	.pre_f=matmul_poid_AP__pre_f
+	.pre_f=matmul_poid_AP__pre_f,
+	.pre_batchique=matmul_poid_AP__pre_batchique
 };

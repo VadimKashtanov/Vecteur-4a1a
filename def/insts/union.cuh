@@ -15,6 +15,7 @@ void union__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t, uint entr
 void union__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void union__pre_f(Inst_t * inst);
+void union__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_union = {
 	.Xs    =union__Xs,
@@ -29,5 +30,6 @@ static fonctions_insts_t fi_union = {
 	.f =union__f,
 	.df=union__df,
 	//
-	.pre_f=union__pre_f
+	.pre_f=union__pre_f,
+	.pre_batchique=union__pre_batchique
 };

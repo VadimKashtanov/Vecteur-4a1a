@@ -16,6 +16,7 @@ void activation_poid__f(Inst_t * inst, float ** x__d, uint * ts__d, uint mega_t,
 void activation_poid__df(Inst_t * inst, float ** x__d, float ** dx__d, uint * ts__d, uint mega_t);
 
 void activation_poid__pre_f(Inst_t * inst);
+void activation_poid__pre_batchique(Inst_t * inst);
 
 static fonctions_insts_t fi_activation_poid = {
 	.Xs    =activation_poid__Xs,
@@ -30,5 +31,6 @@ static fonctions_insts_t fi_activation_poid = {
 	.f =activation_poid__f,
 	.df=activation_poid__df,
 	//
-	.pre_f=activation_poid__pre_f
+	.pre_f=activation_poid__pre_f,
+	.pre_batchique=activation_poid__pre_batchique
 };
